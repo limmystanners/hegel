@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚨 Your True Historical Destiny: A Buzzfeed Quiz! 🚨</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles to amplify the Buzzfeed aesthetic */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fce043, #fb709c, #d5a6eb); /* Funky gradient background */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top for better scrolling on larger quizzes */
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: #2d3748; /* Dark grey for general text */
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 2rem; /* Even more rounded corners! */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* More prominent shadow */
+            padding: 3rem;
+            animation: bounceIn 1s ease-out; /* Bouncier entrance animation */
+            overflow: hidden; /* Ensure content stays within rounded corners */
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.8) translateY(50px); }
+            60% { opacity: 1; transform: scale(1.05) translateY(-10px); }
+            100% { transform: scale(1) translateY(0); }
+        }
+
+        .quiz-title {
+            color: #ff007f; /* Hot pink! */
+            text-align: center;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            font-size: 3.5rem; /* Larger title */
+            font-weight: 900; /* Extra bold */
+            text-shadow: 2px 2px 0 #fff, 4px 4px 0 #8b5cf6; /* Pop-out effect */
+        }
+
+        .quiz-subtitle {
+            color: #6d28d9; /* Deep purple */
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-size: 1.3rem;
+            font-style: italic;
+            position: relative;
+            animation: pulseText 1.5s infinite;
+        }
+
+        @keyframes pulseText {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.9; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .question-card {
+            background-color: #fce7f3; /* Light pink background for cards */
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* More noticeable shadow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: 2px solid #fda4af; /* Pink border */
+        }
+
+        .question-card:hover {
+            transform: translateY(-8px) rotate(-1deg); /* Lift and slight rotation */
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .question-text {
+            color: #be185d; /* Darker pink for question text */
+            margin-bottom: 1.5rem;
+            font-size: 1.7rem; /* Larger question text */
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .answer-label {
+            display: block;
+            background-color: #fdd8ed; /* Lighter pink for answers */
+            padding: 1.25rem 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            color: #831843; /* Dark red-pink for answer text */
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 1px dashed #f472b6; /* Dashed border for fun */
+        }
+
+        .answer-label:hover {
+            background-color: #fbcfe8; /* Darker on hover */
+            transform: scale(1.02) translateX(5px); /* Slide effect on hover */
+            border-color: #ec4899;
+        }
+
+        .answer-label input[type="radio"]:checked + span {
+            background-color: #ff007f; /* Hot pink when selected */
+            color: #ffffff;
+            transform: scale(1.03) translateX(0); /* More pronounced scale */
+            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.5);
+            border-color: #ff007f;
+            border-style: solid;
+        }
+
+        /* Hide default radio button */
+        .answer-label input[type="radio"] {
+            display: none;
+        }
+
+        .submit-button, .llm-button {
+            display: block;
+            width: 100%;
+            padding: 1.5rem 2.5rem;
+            background: linear-gradient(45deg, #8b5cf6, #d5a6eb); /* Purple gradient button */
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 1.5rem;
+            cursor: pointer;
+            border: none;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 1.5rem; /* Spacing for multiple buttons */
+        }
+
+        .llm-button {
+            background: linear-gradient(45deg, #f56565, #f6e05e); /* Different gradient for LLM buttons */
+            box-shadow: 0 8px 25px rgba(245, 101, 101, 0.4);
+            font-size: 1.3rem; /* Slightly smaller for LLM buttons */
+            padding: 1.2rem 2rem;
+        }
+
+        .submit-button:hover {
+            background: linear-gradient(45deg, #d5a6eb, #8b5cf6); /* Reverse gradient on hover */
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.6);
+        }
+
+        .llm-button:hover {
+            background: linear-gradient(45deg, #f6e05e, #f56565); /* Reverse gradient on hover */
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 12px 30px rgba(245, 101, 101, 0.6);
+        }
+
+        .submit-button:active, .llm-button:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Sparkle effect for button */
+        .submit-button::before, .llm-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: skewX(-30deg);
+            transition: all 0.7s ease;
+        }
+
+        .submit-button:hover::before, .llm-button:hover::before {
+            left: 100%;
+        }
+
+
+        .results-container {
+            margin-top: 3rem;
+            padding: 2.5rem;
+            background-color: #e6fffa; /* Light teal for results */
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            animation: popIn 0.8s ease-out; /* Popping animation for results */
+            border: 2px solid #4fd1c5; /* Teal border */
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            80% { opacity: 1; transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .result-title {
+            color: #38b2ac; /* Dark teal for result title */
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 0 #fff, 2px 2px 0 #68d391; /* Another pop-out effect */
+        }
+
+        .result-description {
+            color: #2c5282; /* Darker blue for description */
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+        }
+
+        .llm-output {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #ffeaea; /* Very light red for LLM output */
+            border-radius: 1rem;
+            border: 1px solid #f687b3; /* Pink border */
+            color: #b91c1c; /* Dark red text */
+            font-style: italic;
+            line-height: 1.5;
+            min-height: 50px; /* Ensure space for content */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.1rem;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #8b5cf6; /* Blue */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .restart-button {
+            padding: 1rem 2rem;
+            background-color: #a0aec0; /* Grey restart button */
+            color: #ffffff;
+            font-weight: bold;
+            border-radius: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s ease-in-out;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+
+        .restart-button:hover {
+            background-color: #718096; /* Darker grey on hover */
+            transform: scale(1.02);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .quiz-container {
+                padding: 1.5rem;
+                margin: 1rem;
+                border-radius: 1.5rem;
+            }
+            .quiz-title {
+                font-size: 2.5rem;
+            }
+            .quiz-subtitle {
+                font-size: 1.1rem;
+            }
+            .question-text {
+                font-size: 1.4rem;
+            }
+            .answer-label {
+                font-size: 1rem;
+                padding: 1rem 1.25rem;
+            }
+            .submit-button, .llm-button {
+                font-size: 1.2rem;
+                padding: 1.2rem 1.8rem;
+                border-radius: 1rem;
+            }
+            .results-container {
+                padding: 1.5rem;
+                border-radius: 1rem;
+            }
+            .result-title {
+                font-size: 2rem;
+            }
+            .result-description {
+                font-size: 1.1rem;
+            }
+            .restart-button {
+                font-size: 1rem;
+                padding: 0.8rem 1.5rem;
+            }
+            .llm-output {
+                font-size: 0.95rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="quizApp" class="quiz-container">
+        <h1 class="quiz-title">🤯 UNLOCK YOUR INNER HISTORY NERD! 🤯</h1>
+        <p class="quiz-subtitle">Ever wondered if your brain is secretly a time machine? Or just a giant, opinionated Wikipedia page? Let's find out which Hegelian historian you *really* are!</p>
+
+        <!-- Quiz Title Image -->
+        <img src="https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=&alt=media&prompt=A%20chaotic%2C%20colorful%2C%20highly%20stylized%20illustration%20of%20a%20brain%20exploding%20with%20historical%20facts%2C%20timelines%2C%20and%20witty%20thought%20bubbles.%20Incorporate%20elements%20of%20a%20time%20vortex%2C%20tiny%20figures%20from%20different%20historical%20eras%20flying%20around%2C%20and%20glowing%20neon%20lines%20connecting%20concepts.%20Make%20it%20feel%20irreverent%2C%20energetic%2C%20and%20slightly%20unhinged%2C%20like%20a%20Buzzfeed%20quiz%20header.%20Bright%2C%20bold%2C%203D%20render%2C%20cartoon%20style." alt="Quiz Title Image" class="rounded-lg shadow-lg w-full h-auto mb-8">
+
+
+        <div id="questionsContainer">
+            <!-- Questions will be dynamically loaded here by JavaScript -->
+        </div>
+
+        <button id="submitQuiz" class="submit-button">
+            ✨ REVEAL MY FATE! ✨
+        </button>
+
+        <div id="resultsContainer" class="results-container hidden">
+            <h2 class="result-title">🎉 IT'S OFFICIAL! YOU ARE... 🎉</h2>
+            <p id="resultText" class="result-description"></p>
+
+            <!-- Result Images -->
+            <img id="resultImage" src="" alt="Your Result Image" class="rounded-lg shadow-lg w-full h-auto mb-8">
+
+            <button id="hegelGhostButton" class="llm-button mt-6">
+                ✨ Hegel's Ghost's Hot Take ✨
+            </button>
+            <div id="hegelGhostOutput" class="llm-output hidden"></div>
+
+            <button id="spiritAnimalButton" class="llm-button">
+                ✨ Your Historical Spirit Animal ✨
+            </button>
+            <div id="spiritAnimalOutput" class="llm-output hidden"></div>
+
+            <button id="restartQuiz" class="restart-button">
+                Do It Again! (No Judgment!)
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Define the quiz questions with a healthy dose of sass and fun
+        const questions = [
+            {
+                question: "You stumble upon an ancient scroll that perfectly describes a Roman feast. Your first instinct is:",
+                answers: [
+                    { text: "OMG, I need to wear a toga, eat grapes, and reenact this! Feel the authentic vibe! 🤩", type: "Original" },
+                    { text: "Fascinating! How does this fit into the grand trajectory of Western culinary evolution? 🤔", type: "Universal" },
+                    { text: "This is a PERFECT example of why modern nutrition is superior. Learn from history's mistakes, people! 🥗", type: "Pragmatic" },
+                    { text: "Is this scroll even legit? Or is it a propaganda piece by Big Toga to sell more olives? Time to investigate! 🕵️‍♀️", type: "Critical" },
+                    { text: "Ah, the symbolic consumption! A clear manifestation of Spirit evolving through gastronomic practices. So profound! ✨", type: "Philosophic" }
+                ],
+                image_prompt: "Comical, highly stylized illustration of a modern person in a toga, looking completely out of place but ecstatic, trying to participate in an exaggeratedly messy and chaotic ancient Roman feast. Grapes are flying, wine is spilling, and everyone looks slightly bewildered. Vibrant, cartoon style, very expressive faces."
+            },
+            {
+                question: "When someone casually mentions 'The Middle Ages,' your brain immediately jumps to:",
+                answers: [
+                    { text: "The dank castles, the smelly streets, the sheer *struggle* of daily life. I'm there! 🏰😩", type: "Original" },
+                    { text: "The crucial period between antiquity and modernity, a necessary stepping stone in humanity's progress. So neat, so orderly! 📊", type: "Universal" },
+                    { text: "Proof that centralized power leads to feudalism. A cautionary tale for democracies! 🚨", type: "Pragmatic" },
+                    { text: "The 'Dark Ages' narrative is SO oversimplified. Let's talk about the unsung heroes and forgotten innovations! 💡", type: "Critical" },
+                    { text: "The agonizing, yet beautiful, dialectical process of Spirit grappling with its own limitations before blossoming into the Renaissance. It's poetry! 🎭", type: "Philosophic" }
+                ],
+                image_prompt: "Humorous, cartoon illustration of a medieval knight trying to use a smartphone to navigate a muddy, crowded village. A bewildered peasant points at the phone. Exaggerated expressions, bright colors, anachronistic humor, Buzzfeed aesthetic."
+            },
+            {
+                question: "Your dream historical documentary is less about facts and more about:",
+                answers: [
+                    { text: "Time travel! I want to experience every battle, every royal scandal, every mundane Monday. No narrator, just *being* there. 🚶‍♀️💨", type: "Original" },
+                    { text: "A massive, beautifully animated timeline of EVERYTHING. From the Big Bang to the selfie stick. Show me the connections! 🌐", type: "Universal" },
+                    { text: "A direct address to the audience: 'And here, children, is why you should NEVER elect a tyrant.' With dramatic pauses. 🎤😠", type: "Pragmatic" },
+                    { text: "Exposing the lies! The untold stories! The conspiracy theories that turned out to be TRUE! With dramatic music, obviously. 🎶🤫", type: "Critical" },
+                    { text: "A highly intellectual, multi-part series on the 'Spirit of the Age' in every era, narrated by a disembodied voice over abstract art. Deep stuff! 🧠🌌", type: "Philosophic" }
+                ],
+                image_prompt: "Dramatic, over-the-top cartoon illustration of a historian pointing intensely at a blackboard filled with chaotic, interconnected lines, arrows, and glowing concepts representing a 'grand timeline of everything.' There's a giant 'MIND BLOWN' thought bubble. Bright, dynamic, energetic style."
+            },
+            {
+                question: "A popular historical movie gets all the facts wrong. You:",
+                answers: [
+                    { text: "Scream internally, then watch it anyway because the costumes are *chef's kiss* and it *feels* kinda right. 💅🎬", type: "Original" },
+                    { text: "Sigh. Another missed opportunity to show the *true* progression of global events. So sad, so inaccurate. 🙄", type: "Universal" },
+                    { text: "Immediately write a furious blog post about how Hollywood is distorting vital historical lessons for profit! 🔥💻", type: "Pragmatic" },
+                    { text: "Get out your red pen and start live-tweeting all the inaccuracies, citing obscure primary sources. Prepare for a Twitter storm! ✏️🐦", type: "Critical" },
+                    { text: "Ponder if this 'factual inaccuracy' is merely a crude, popular manifestation of a deeper, underlying historical truth, understood only by the enlightened. Hmm. 🤔✨", type: "Philosophic" }
+                ],
+                image_prompt: "Comical illustration of a person with exaggerated frustration, wearing a historical costume but holding a remote control and yelling at a TV screen showing a historically inaccurate movie scene. Popcorn is flying, and their face is bright red. Vibrant, humorous, cartoon style, Buzzfeed aesthetic."
+            },
+            {
+                question: "Your personal motto when thinking about the past is:",
+                answers: [
+                    { text: "You had to be there. 💯", type: "Original" },
+                    { text: "It's all connected, man! Like, *everything*! 🔗", type: "Universal" },
+                    { text: "Those who don't learn from history are doomed to repeat it... and probably end up on TikTok for it. 🤦‍♂️", type: "Pragmatic" },
+                    { text: "Question EVERYTHING. Especially what your history teacher told you. 😉", type: "Critical" },
+                    { text: "History isn't just stuff that happened; it's Spirit becoming self-aware in time and space. Mind. Blown. 🤯", type: "Philosophic" }
+                ],
+                image_prompt: "Abstract, vibrant illustration of tangled, glowing neon threads connecting diverse historical objects and symbols (e.g., a pyramid, a smartphone, a quill pen, a rocket). A stylized brain in the center is emitting 'MIND BLOWN' rays. Energetic, interconnected, modern art style, Buzzfeed aesthetic."
+            }
+        ];
+
+        // Define the over-the-top descriptions and their corresponding image prompts for results
+        const historianTypes = {
+            Original: {
+                title: "The Vibe Check Historian (aka Original Gangster of History)!",
+                description: "Forget dusty archives and boring lectures! You're all about that *experience*. You don't just read history; you wanna live it, breathe it, probably even sniff it (metaphorically!). You're the kind of person who'd bring back a souvenir from 1776, if only time travel were a thing. Your motto: 'You had to be there!' Your superpower: Empathy so strong, you practically *become* historical figures. Just don't get too lost in the past, okay? We need you here in the present to share those epic vibes! 🎉",
+                image_prompt: "Humorous, cartoon illustration of a person wearing a mix of historical and modern clothes (like a toga and sneakers), holding a camera phone and taking a selfie in front of a historical event (e.g., a tiny, stylized battle or a king being crowned). They have an ecstatic, 'living the moment' expression. Bright, vibrant, energetic style, Buzzfeed aesthetic."
+            },
+            Universal: {
+                title: "The Master Weaver of Time (aka The Universal Overlord)!",
+                description: "While others are sweating the small stuff, you're mentally charting the entire cosmic dance of history! From the dawn of civilization to that awkward phase your country went through last decade, you see the grand tapestry. Individual events? Psh. You're here for the *patterns*, the *movements*, the ultimate crescendo of human existence. You're the one who can explain how a Roman aqueduct connects to your morning coffee. Bow down to the ultimate historical synthesist! 👑🌍",
+                image_prompt: "Dynamic, epic cartoon illustration of a person standing on top of a globe, with swirling timelines and interconnected historical scenes stretching out in every direction. They are holding a giant magnifying glass, looking at the entire sweep of human history with a knowing smile. Bright, grand, interconnected style, Buzzfeed aesthetic."
+            },
+            Pragmatic: {
+                title: "The Life Coach of the Past (aka The 'I Told You So' Prophet)!",
+                description: "You're not just studying history; you're harvesting wisdom like it's going out of style! Every historical blunder is a valuable lesson, every triumph a blueprint for success. You watch documentaries screaming, 'SEE?! THIS IS WHY!' at the screen. You're basically history's unpaid consultant, convinced that if only modern society listened to your insights, all our problems would vanish. Keep fighting the good fight, you magnificent moralizer! 🚀📖",
+                image_prompt: "Humorous, cartoon illustration of a historian in a modern suit, confidently pointing at a historical event unfolding behind them (e.g., a small, stylized battle or a political debate), with a speech bubble saying 'See?! This is why!' They look like a motivational speaker from the past. Energetic, bold, direct style, Buzzfeed aesthetic."
+            },
+            Critical: {
+                title: "The Myth-Busting Maverick (aka The Conspiracy Theorist Who's Actually Right)!",
+                description: "Received wisdom? 'Fake news!' you cry! You live for the thrill of exposing historical inaccuracies, re-interpreting tired narratives, and generally making everyone uncomfortable with how much you know about what *really* happened. You're the Sherlock Holmes of the past, always sniffing out the untold story, the hidden bias, the secret agenda. Just be careful not to fall down too many rabbit holes... unless they lead to *more* truth! 🕵️‍♀️💥",
+                image_prompt: "Comical, dramatic cartoon illustration of a historian dressed like a detective (trench coat, magnifying glass), dramatically tearing through a giant, dusty old book labeled 'Accepted History.' Behind them, a bright, glowing 'TRUTH' emerges from the shadows. Energetic, action-oriented, humorous style, Buzzfeed aesthetic."
+            },
+            Philosophic: {
+                title: "The Cosmic Brainiac (aka The Spirit Whisperer)!",
+                description: "Why did that happen? Because Spirit *willed* it, obviously! You don't just see events; you see the glorious, rational unfolding of human consciousness, striving for ultimate freedom. Battles are not just battles; they're manifestations of a higher purpose! You speak in capital letters (Spirit, Reason, Idea) and see the dialectic in your breakfast cereal. You're less a historian, more a philosophical oracle. Keep those profound insights coming, you beautiful, abstract mind! 🤯✨",
+                image_prompt: "Abstract, vibrant illustration of a stylized, glowing brain floating in a cosmic void, with ethereal light rays connecting it to various historical epochs (represented by subtle, glowing symbols like a pyramid, a Roman column, a futuristic cityscape). The overall impression is profound, mysterious, and grand. Modern, conceptual art style, Buzzfeed aesthetic."
+            }
+        };
+
+        // Get references to DOM elements
+        const questionsContainer = document.getElementById('questionsContainer');
+        const submitButton = document.getElementById('submitQuiz');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const resultText = document.getElementById('resultText');
+        const resultImage = document.getElementById('resultImage'); // New: Result image element
+        const hegelGhostButton = document.getElementById('hegelGhostButton');
+        const hegelGhostOutput = document.getElementById('hegelGhostOutput');
+        const spiritAnimalButton = document.getElementById('spiritAnimalButton');
+        const spiritAnimalOutput = document.getElementById('spiritAnimalOutput');
+        const restartButton = document.getElementById('restartQuiz');
+
+        let currentHistorianType = ''; // To store the result type for LLM calls
+
+        /**
+         * Generates an image URL from a prompt using the Imagen API.
+         * @param {string} prompt The text prompt for image generation.
+         * @returns {string} The URL for the generated image.
+         */
+        function getImageGenerateUrl(prompt) {
+            const apiKey = ""; // Canvas will provide this at runtime
+            // Encode the prompt to be URL-safe
+            const encodedPrompt = encodeURIComponent(prompt);
+            return `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}&alt=media&prompt=${encodedPrompt}`;
+        }
+
+        /**
+         * Renders the quiz questions dynamically into the HTML.
+         */
+        function renderQuiz() {
+            questionsContainer.innerHTML = ''; // Clear previous questions
+            questions.forEach((q, qIndex) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                questionCard.innerHTML = `
+                    <img src="${getImageGenerateUrl(q.image_prompt)}" alt="Question Image ${qIndex + 1}" class="rounded-lg shadow-lg w-full h-auto mb-4">
+                    <p class="question-text">${qIndex + 1}. ${q.question}</p>
+                    <div class="answers-group" data-question-index="${qIndex}">
+                        ${q.answers.map((answer, aIndex) => `
+                            <label class="answer-label">
+                                <input type="radio" name="question${qIndex}" value="${answer.type}" required>
+                                <span>${answer.text}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                questionsContainer.appendChild(questionCard);
+            });
+            // Hide results and show quiz on render
+            resultsContainer.classList.add('hidden');
+            submitButton.classList.remove('hidden');
+            hegelGhostOutput.classList.add('hidden'); // Hide LLM outputs on reset
+            spiritAnimalOutput.classList.add('hidden');
+            hegelGhostOutput.innerHTML = ''; // Clear previous LLM outputs
+            spiritAnimalOutput.innerHTML = '';
+            resultImage.src = ''; // Clear previous result image
+        }
+
+        /**
+         * Calculates the quiz result based on selected answers.
+         * Tallies points for each historian type.
+         * @returns {Object} An object containing the scores for each type, or null if not all questions answered.
+         */
+        function calculateResult() {
+            const scores = {
+                Original: 0,
+                Universal: 0,
+                Pragmatic: 0,
+                Critical: 0,
+                Philosophic: 0
+            };
+
+            // Get all selected radio buttons
+            const selectedAnswers = document.querySelectorAll('input[type="radio"]:checked');
+
+            // Check if all questions have been answered
+            if (selectedAnswers.length !== questions.length) {
+                // Display a custom message box instead of alert()
+                showMessageBox("Hold up, history buff! You gotta answer ALL the questions to unlock your destiny! 🤓");
+                return null;
+            }
+
+            // Tally scores based on the type associated with each answer
+            selectedAnswers.forEach(input => {
+                const type = input.value;
+                if (scores.hasOwnProperty(type)) {
+                    scores[type]++;
+                }
+            });
+
+            return scores;
+        }
+
+        /**
+         * Determines the top historian type and displays the result.
+         * Sets currentHistorianType for LLM calls and loads result image.
+         * @param {Object} scores - The calculated scores for each historian type.
+         */
+        function displayResult(scores) {
+            let topType = '';
+            let maxScore = -1;
+
+            // Find the type with the highest score
+            for (const type in scores) {
+                if (scores[type] > maxScore) {
+                    maxScore = scores[type];
+                    topType = type;
+                } else if (scores[type] === maxScore) {
+                    // For simplicity, sticking with the first one found in the loop for ties.
+                }
+            }
+
+            currentHistorianType = topType; // Store the result type
+            const resultInfo = historianTypes[topType];
+            resultText.innerHTML = `
+                <h3 class="text-3xl font-bold mb-4 text-[#ff007f]">${resultInfo.title}</h3>
+                <p>${resultInfo.description}</p>
+            `;
+
+            // Set the result image source
+            resultImage.src = getImageGenerateUrl(resultInfo.image_prompt);
+            resultImage.alt = resultInfo.title + " Image";
+
+
+            // Hide quiz and show results
+            questionsContainer.classList.add('hidden');
+            submitButton.classList.add('hidden');
+            resultsContainer.classList.remove('hidden');
+            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Scroll to results
+        }
+
+        /**
+         * Shows a custom message box instead of alert().
+         * @param {string} message - The message to display.
+         */
+        function showMessageBox(message) {
+            // Create a simple modal/message box
+            const messageBox = document.createElement('div');
+            messageBox.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50';
+            messageBox.innerHTML = `
+                <div class="bg-white rounded-xl p-8 shadow-lg max-w-sm w-full text-center transform scale-95 animate-popIn">
+                    <p class="text-xl font-semibold mb-6 text-red-600">${message}</p>
+                    <button id="closeMessageBox" class="px-6 py-3 bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 transition duration-300">Got It!</button>
+                </div>
+            `;
+            document.body.appendChild(messageBox);
+
+            document.getElementById('closeMessageBox').addEventListener('click', () => {
+                messageBox.remove();
+            });
+        }
+
+        /**
+         * Calls the Gemini API to generate Hegel's Ghost's commentary.
+         * @param {string} historianType - The determined historian type.
+         */
+        async function generateHegelCommentary(historianType) {
+            hegelGhostOutput.classList.remove('hidden');
+            hegelGhostOutput.innerHTML = '<div class="loading-spinner"></div><p class="mt-2 text-gray-500">Hegel\'s ghost is pondering your existence...</p>';
+
+            const typeDescription = historianTypes[historianType].description;
+
+            // Craft a prompt that encourages a Buzzfeed-style, Hegelian, sarcastic tone
+            const prompt = `As the ghost of G.W.F. Hegel, provide a short, sarcastic, yet philosophically profound (and slightly dramatic) commentary on a person who embodies the "${historianType}" historical type, described as "${typeDescription}". Make it sound like a Buzzfeed "hot take" from beyond the grave. Keep it under 100 words.`;
+
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Leave as empty string for Canvas
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json(); // Use await here
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    hegelGhostOutput.innerHTML = `<p>${text}</p>`;
+                } else {
+                    hegelGhostOutput.innerHTML = '<p>Hegel\'s ghost is currently stuck in a dialectical loop. Try again later! 👻</p>';
+                }
+            } catch (error) {
+                console.error("Error generating Hegel commentary:", error);
+                hegelGhostOutput.innerHTML = '<p>Hegel\'s spectral Wi-Fi is down. Cannot connect to the Absolute! 💀</p>';
+            }
+        }
+
+        /**
+         * Calls the Gemini API to generate the historical spirit animal.
+         * @param {string} historianType - The determined historian type.
+         */
+        async function generateSpiritAnimal(historianType) {
+            spiritAnimalOutput.classList.remove('hidden');
+            spiritAnimalOutput.innerHTML = '<div class="loading-spinner"></div><p class="mt-2 text-gray-500">Your spirit animal is migrating through the annals of time...</p>';
+
+            const typeDescription = historianTypes[historianType].description;
+
+            // Craft a prompt for a quirky historical spirit animal
+            const prompt = `Given the historical type "${historianType}" described as "${typeDescription}", invent a quirky, humorous, and historically themed "spirit animal" that embodies their approach. Describe its name and what it does in a Buzzfeed-style, slightly sarcastic tone. Keep it under 100 words. Example: "The Archivist Owl: It hoots cryptic facts from forgotten scrolls."`;
+
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Leave as empty string for Canvas
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json(); // Use await here
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    spiritAnimalOutput.innerHTML = `<p>${text}</p>`;
+                } else {
+                    spiritAnimalOutput.innerHTML = '<p>Your spirit animal is hiding in the footnotes of history. Try again!</p>';
+                }
+            } catch (error) {
+                console.error("Error generating spirit animal:", error);
+                spiritAnimalOutput.innerHTML = '<p>The spirit animal whisperer is on vacation. No animal insights today! 🦒</p>';
+            }
+        }
+
+        // Event listener for the submit button
+        submitButton.addEventListener('click', () => {
+            const scores = calculateResult();
+            if (scores) { // Only display results if all questions were answered
+                displayResult(scores);
+            }
+        });
+
+        // Event listeners for the new LLM buttons
+        hegelGhostButton.addEventListener('click', () => {
+            if (currentHistorianType) {
+                generateHegelCommentary(currentHistorianType);
+            } else {
+                showMessageBox("Finish the quiz first, then Hegel's ghost will judge you! 😉");
+            }
+        });
+
+        spiritAnimalButton.addEventListener('click', () => {
+            if (currentHistorianType) {
+                generateSpiritAnimal(currentHistorianType);
+            } else {
+                showMessageBox("Answer the questions to unleash your inner historical beast! 🦁");
+            }
+        });
+
+
+        // Event listener for the restart button
+        restartButton.addEventListener('click', () => {
+            // Reset radio selections
+            const allRadios = document.querySelectorAll('input[type="radio"]');
+            allRadios.forEach(radio => radio.checked = false);
+            renderQuiz(); // Re-render the quiz to reset its state
+            questionsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }); // Scroll to top
+        });
+
+        // Initial render of the quiz when the page loads
+        document.addEventListener('DOMContentLoaded', renderQuiz);
+    </script>
+</body>
+</html>
